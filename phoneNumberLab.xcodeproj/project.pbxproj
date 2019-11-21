@@ -13,7 +13,18 @@
 		F8E8F20F238313B2001D3AB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8E8F20D238313B2001D3AB2 /* Main.storyboard */; };
 		F8E8F211238313B3001D3AB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8E8F210238313B3001D3AB2 /* Assets.xcassets */; };
 		F8E8F214238313B3001D3AB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8E8F212238313B3001D3AB2 /* LaunchScreen.storyboard */; };
+		F8E8F22223836BD3001D3AB2 /* phoneNumberLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8F22123836BD3001D3AB2 /* phoneNumberLabTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F8E8F22423836BD3001D3AB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8E8F1FC238313B2001D3AB2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F8E8F203238313B2001D3AB2;
+			remoteInfo = phoneNumberLab;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F8E8F204238313B2001D3AB2 /* phoneNumberLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = phoneNumberLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,10 +35,20 @@
 		F8E8F210238313B3001D3AB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F8E8F213238313B3001D3AB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F8E8F215238313B3001D3AB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8E8F21F23836BD3001D3AB2 /* phoneNumberLabTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = phoneNumberLabTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8E8F22123836BD3001D3AB2 /* phoneNumberLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = phoneNumberLabTests.swift; sourceTree = "<group>"; };
+		F8E8F22323836BD3001D3AB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		F8E8F201238313B2001D3AB2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8E8F21C23836BD3001D3AB2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				F8E8F206238313B2001D3AB2 /* phoneNumberLab */,
+				F8E8F22023836BD3001D3AB2 /* phoneNumberLabTests */,
 				F8E8F205238313B2001D3AB2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				F8E8F204238313B2001D3AB2 /* phoneNumberLab.app */,
+				F8E8F21F23836BD3001D3AB2 /* phoneNumberLabTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -65,6 +88,15 @@
 				F8E8F215238313B3001D3AB2 /* Info.plist */,
 			);
 			path = phoneNumberLab;
+			sourceTree = "<group>";
+		};
+		F8E8F22023836BD3001D3AB2 /* phoneNumberLabTests */ = {
+			isa = PBXGroup;
+			children = (
+				F8E8F22123836BD3001D3AB2 /* phoneNumberLabTests.swift */,
+				F8E8F22323836BD3001D3AB2 /* Info.plist */,
+			);
+			path = phoneNumberLabTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +119,24 @@
 			productReference = F8E8F204238313B2001D3AB2 /* phoneNumberLab.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F8E8F21E23836BD3001D3AB2 /* phoneNumberLabTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8E8F22623836BD3001D3AB2 /* Build configuration list for PBXNativeTarget "phoneNumberLabTests" */;
+			buildPhases = (
+				F8E8F21B23836BD3001D3AB2 /* Sources */,
+				F8E8F21C23836BD3001D3AB2 /* Frameworks */,
+				F8E8F21D23836BD3001D3AB2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8E8F22523836BD3001D3AB2 /* PBXTargetDependency */,
+			);
+			name = phoneNumberLabTests;
+			productName = phoneNumberLabTests;
+			productReference = F8E8F21F23836BD3001D3AB2 /* phoneNumberLabTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -99,6 +149,10 @@
 				TargetAttributes = {
 					F8E8F203238313B2001D3AB2 = {
 						CreatedOnToolsVersion = 10.3;
+					};
+					F8E8F21E23836BD3001D3AB2 = {
+						CreatedOnToolsVersion = 10.3;
+						TestTargetID = F8E8F203238313B2001D3AB2;
 					};
 				};
 			};
@@ -116,6 +170,7 @@
 			projectRoot = "";
 			targets = (
 				F8E8F203238313B2001D3AB2 /* phoneNumberLab */,
+				F8E8F21E23836BD3001D3AB2 /* phoneNumberLabTests */,
 			);
 		};
 /* End PBXProject section */
@@ -128,6 +183,13 @@
 				F8E8F214238313B3001D3AB2 /* LaunchScreen.storyboard in Resources */,
 				F8E8F211238313B3001D3AB2 /* Assets.xcassets in Resources */,
 				F8E8F20F238313B2001D3AB2 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8E8F21D23836BD3001D3AB2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,7 +206,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8E8F21B23836BD3001D3AB2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8E8F22223836BD3001D3AB2 /* phoneNumberLabTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F8E8F22523836BD3001D3AB2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F8E8F203238313B2001D3AB2 /* phoneNumberLab */;
+			targetProxy = F8E8F22423836BD3001D3AB2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F8E8F20D238313B2001D3AB2 /* Main.storyboard */ = {
@@ -286,7 +364,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 798DADU24X;
 				INFOPLIST_FILE = phoneNumberLab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -295,6 +374,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.unionbank.phoneNumberLab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "UB Enterprise In House Wild Card Provision Profile";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -304,7 +384,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 798DADU24X;
 				INFOPLIST_FILE = phoneNumberLab/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -313,8 +394,49 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.unionbank.phoneNumberLab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "UB Enterprise In House Wild Card Provision Profile";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F8E8F22723836BD3001D3AB2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 798DADU24X;
+				INFOPLIST_FILE = phoneNumberLabTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unionbank.phoneNumberLabTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/phoneNumberLab.app/phoneNumberLab";
+			};
+			name = Debug;
+		};
+		F8E8F22823836BD3001D3AB2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 798DADU24X;
+				INFOPLIST_FILE = phoneNumberLabTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unionbank.phoneNumberLabTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/phoneNumberLab.app/phoneNumberLab";
 			};
 			name = Release;
 		};
@@ -335,6 +457,15 @@
 			buildConfigurations = (
 				F8E8F219238313B3001D3AB2 /* Debug */,
 				F8E8F21A238313B3001D3AB2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8E8F22623836BD3001D3AB2 /* Build configuration list for PBXNativeTarget "phoneNumberLabTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8E8F22723836BD3001D3AB2 /* Debug */,
+				F8E8F22823836BD3001D3AB2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
