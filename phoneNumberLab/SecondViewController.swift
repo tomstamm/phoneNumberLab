@@ -19,28 +19,48 @@ class SecondViewController: UIViewController {
 @IBOutlet var overflowMessageLbl: UILabel!
 @IBOutlet var illegalDigitsMessageLbl: UILabel!
 
-override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear( animated )
-    
-    // Keyboard scolling logic
-    phoneNumberTxt.delegate = self
-    phoneNumberTxt.inputAccessoryView = keypadToolBar
-}
-
-@IBAction func NumericDone(_ sender: UIBarButtonItem) {
-    DispatchQueue.main.async { () -> Void in
-        self.phoneNumberTxt?.resignFirstResponder()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear( animated )
+        
+        // Keyboard scolling logic
+        phoneNumberTxt.delegate = self
+        phoneNumberTxt.inputAccessoryView = keypadToolBar
+        
+        // This will not get thrown for the PhoneTextField because we always return
+        // false.  We have to handle this by hand.
+        phoneNumberTxt.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
-}
 
-@IBAction func positionChanged(_ sender: UISlider) {
-    let value:Int = Int( sender.value )
-    positionLbl.text = String( value )
-    
-    if let newPosition = phoneNumberTxt.position( from:phoneNumberTxt.beginningOfDocument, offset:(value) ) {
-        phoneNumberTxt.selectedTextRange = phoneNumberTxt.textRange( from:newPosition, to:newPosition )
+    @objc func textFieldDidChange( _ textField: UITextField ) {
+        if textField == phoneNumberTxt {
+            resultLbl.text = phoneNumberTxt.token
+        }
     }
-}
+
+    @IBAction func NumericDone(_ sender: UIBarButtonItem) {
+        DispatchQueue.main.async { () -> Void in
+            self.phoneNumberTxt?.resignFirstResponder()
+        }
+    }
+
+    @IBAction func positionChanged(_ sender: UISlider) {
+        let value:Int = Int( sender.value )
+        positionLbl.text = String( value )
+        
+        if let newPosition = phoneNumberTxt.position( from:phoneNumberTxt.beginningOfDocument, offset:(value) ) {
+            phoneNumberTxt.selectedTextRange = phoneNumberTxt.textRange( from:newPosition, to:newPosition )
+        }
+    }
+    
+//    override func paste(_ sender: Any?) {
+//        print( "sender: \(String(describing: sender))" )
+//        if phoneNumberTxt.isFirstResponder      {
+//            print( "phoneNumberTxt is First Responder" )
+//            if let pasteString = UIPasteboard.general.string {
+//                print( "pasteString: \(pasteString)" )
+//            }
+//        }
+//    }
 }
 
 // MARK: - UITextFieldDelegate Methods
@@ -54,6 +74,7 @@ extension SecondViewController: UITextFieldDelegate {
             print("string:'\(string)'")
 
             _ = phoneNumberTxt.handleTextField( textField, shouldChangeCharactersIn:range, replacementString:string)
+            textFieldDidChange( phoneNumberTxt )
             
             if let text = textField.text {
                 positionSlider.maximumValue = Float( text.count )

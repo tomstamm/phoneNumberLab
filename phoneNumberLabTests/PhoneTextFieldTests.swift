@@ -10,11 +10,17 @@ import XCTest
 @testable import phoneNumberLab
 
 class testPhoneTextField: XCTestCase {
+    
+    let second = SecondViewController()
+
+    
     let phonenumberText = PhoneTextField( frame:CGRect( x:10, y:10, width:10, height:10) )
     let currentErrorCode:PhoneNumberErrors = .noError
 
     override func setUp() {
         phonenumberText.errorDelegate = self
+        
+        second.phoneNumberTxt = phonenumberText
     }
 
     override func tearDown() {
@@ -230,6 +236,42 @@ class testPhoneTextField: XCTestCase {
         setupAndDoTheTest( startWith:"000", select:NSMakeRange( 0, 3 ), newString:"98765432", expectedResult:"(987) 654 - 32" )
         setupAndDoTheTest( startWith:"(987) 654 - 3210", select:NSMakeRange( 7, 9 ), newString:"", expectedResult:"(987) 6" )
     }
+    
+    func paste( _ string :String? ) {
+        UIPasteboard.general.string = string
+        if let pasteString = UIPasteboard.general.string {
+            phonenumberText.insertText( pasteString )
+        }
+    }
+    
+    func selectRange( startAt:Int, forLength:Int ) {
+        let endAt = startAt + forLength
+        if let startPosition = phonenumberText.position( from:phonenumberText.beginningOfDocument, offset:( startAt ) ),
+            let endPosition = phonenumberText.position( from:phonenumberText.beginningOfDocument, offset:( endAt ) ) {
+
+            phonenumberText.selectedTextRange = phonenumberText.textRange( from:startPosition, to:endPosition )
+        }
+    }
+    
+    func testCopyPaste() {
+        phonenumberText.text = ""
+        selectRange( startAt:0, forLength:0 )
+        paste( "9876543210" )
+        
+        XCTAssertEqual( phonenumberText.text, "9876543210", "Unexpect text value in from token value")
+        
+        selectRange( startAt:0, forLength:10 )
+        paste( "9999999999" )
+        
+        XCTAssertEqual( phonenumberText.text, "9999999999", "Unexpect text value in from token value")
+
+//        UIPasteboard.general.string = "0000000000"
+//        self.second.phoneNumberTxt.becomeFirstResponder()
+//        self.second.paste( self )
+//        XCTAssertEqual( self.phonenumberText.text, "00000000001", "Unexpect text value in from token value")
+
+    }
+    
 }
 
 extension testPhoneTextField: PhoneTextFieldProtocol {

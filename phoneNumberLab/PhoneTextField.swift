@@ -135,7 +135,11 @@ class PhoneTextField: UITextField {
                     newCursorPosition = range.location
                 }
             } else {
-                newCursorPosition = reverseLookup[ newTheoreticalCursor ]
+                if newTheoreticalCursor >= 0 {
+                    newCursorPosition = reverseLookup[ newTheoreticalCursor ]
+                } else {
+                    newCursorPosition = 1 // We will have to edge case test this line
+                }
             }
         }
         print("   newCursorPosition:\(newCursorPosition)")

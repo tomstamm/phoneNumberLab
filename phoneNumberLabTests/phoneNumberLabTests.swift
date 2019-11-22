@@ -207,6 +207,8 @@ class phoneNumberLabTests: XCTestCase {
     }
     
     func setupAndDoTheTest( startWith initalValue:String, select selectedRange:NSRange, newString:String, expectedResult:String ) {
+        first.realTokenValue = ""
+        
         let subText:String = (initalValue as NSString ).substring( with:selectedRange ) as String
         print("\nStarting with '\(initalValue)'; selected range is \(selectedRange) = ('\(subText)').")
         
@@ -220,6 +222,8 @@ class phoneNumberLabTests: XCTestCase {
         let storedValue = self.first.phoneNumberTxt.text
         XCTAssertEqual( storedValue, expectedResult, "Unexpect text value in from phoneNumberTxt object")
 
+        print("first.realTokenValue = \(first.realTokenValue)")
+        print("expectedValue = \(expectedValue)")
         XCTAssertEqual( first.realTokenValue, expectedValue, "Unexpect text value in from realTokenValue")
 
         XCTAssertFalse( value, "Expected flag value return by textField function")
@@ -229,9 +233,9 @@ class phoneNumberLabTests: XCTestCase {
         first.phoneNumberTxt = UITextField()
         
         setupAndDoTheTest( startWith:"", select:NSMakeRange( 0, 0 ), newString:"9876543210", expectedResult:"(987) 654 - 3210" )
-        setupAndDoTheTest( startWith:"", select:NSMakeRange( 0, 0 ), newString:"9876543210x", expectedResult:"(987) 654 - 3210x" )
-        setupAndDoTheTest( startWith:"", select:NSMakeRange( 0, 0 ), newString:"9876543210y", expectedResult:"(987) 654 - 3210y" )
-        setupAndDoTheTest( startWith:"", select:NSMakeRange( 0, 0 ), newString:"9876543210z", expectedResult:"(987) 654 - 3210z" )
+        setupAndDoTheTest( startWith:"", select:NSMakeRange( 0, 0 ), newString:"9876543210x", expectedResult:"" )
+        setupAndDoTheTest( startWith:"", select:NSMakeRange( 0, 0 ), newString:"9876543210y", expectedResult:"" )
+        setupAndDoTheTest( startWith:"", select:NSMakeRange( 0, 0 ), newString:"9876543210z", expectedResult:"" )
 
         setupAndDoTheTest( startWith:"(987) 654 - 3210", select:NSMakeRange( 6, 8 ), newString:"999", expectedResult:"(987) 999 - 10" )
         setupAndDoTheTest( startWith:"000", select:NSMakeRange( 0, 3 ), newString:"98765432", expectedResult:"(987) 654 - 32" )

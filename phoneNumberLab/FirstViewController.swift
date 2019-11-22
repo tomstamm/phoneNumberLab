@@ -161,8 +161,8 @@ extension FirstViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         overflowMessageLbl.isHidden = true
-            overflowMessageLbl.isHidden = true
-            illegalDigitsMessageLbl.isHidden = true
+            overflowMessageLbl?.isHidden = true
+            illegalDigitsMessageLbl?.isHidden = true
             if (textField == phoneNumberTxt) {
                 
                 if let text = textField.text {
@@ -221,11 +221,11 @@ extension FirstViewController: UITextFieldDelegate {
                         }
                     } else {
                         print("data too big for phone number: <='\(realTokenValue)'")
-                        overflowMessageLbl.isHidden = false
+                        overflowMessageLbl?.isHidden = false
                     }
                 } else {
                     print("Non-legal characters would be added for phone number: expected'\(string)'")
-                    illegalDigitsMessageLbl.isHidden = false
+                    illegalDigitsMessageLbl?.isHidden = false
                 }
                 
                 return false
