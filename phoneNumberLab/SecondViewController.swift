@@ -9,85 +9,80 @@
 import UIKit
 
 class SecondViewController: UIViewController {
-    let maxPhoneDigits:Int = 10
-    
-    @IBOutlet var phoneNumberTxt: UITextField!
-    @IBOutlet var resultLbl: UILabel!
-    @IBOutlet var keypadToolBar: UIToolbar!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        phoneNumberTxt.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear( animated )
-        
-        // Keyboard scolling logic
-        phoneNumberTxt.delegate = self
-        phoneNumberTxt.inputAccessoryView = keypadToolBar
-    }
-    
-    
-    @objc func textFieldDidChange( _ textField: UITextField ) {
-        
-        resultLbl.text = textField.text
-    }
+       let maxPhoneDigits:Int = 10
 
-    @IBAction func NumericDone(_ sender: UIBarButtonItem) {
-        DispatchQueue.main.async { () -> Void in
-            self.phoneNumberTxt?.resignFirstResponder()
-        }
+@IBOutlet var phoneNumberTxt: PhoneTextField!
+@IBOutlet var resultLbl: UILabel!
+@IBOutlet var keypadToolBar: UIToolbar!
+@IBOutlet var positionSlider: UISlider!
+@IBOutlet var positionLbl: UILabel!
+@IBOutlet var overflowMessageLbl: UILabel!
+@IBOutlet var illegalDigitsMessageLbl: UILabel!
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear( animated )
+    
+    // Keyboard scolling logic
+    phoneNumberTxt.delegate = self
+    phoneNumberTxt.inputAccessoryView = keypadToolBar
+}
+
+@IBAction func NumericDone(_ sender: UIBarButtonItem) {
+    DispatchQueue.main.async { () -> Void in
+        self.phoneNumberTxt?.resignFirstResponder()
     }
+}
+
+@IBAction func positionChanged(_ sender: UISlider) {
+    let value:Int = Int( sender.value )
+    positionLbl.text = String( value )
+    
+    if let newPosition = phoneNumberTxt.position( from:phoneNumberTxt.beginningOfDocument, offset:(value) ) {
+        phoneNumberTxt.selectedTextRange = phoneNumberTxt.textRange( from:newPosition, to:newPosition )
+    }
+}
 }
 
 // MARK: - UITextFieldDelegate Methods
 extension SecondViewController: UITextFieldDelegate {
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
-    {
+   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+       
+        overflowMessageLbl.isHidden = true
+        illegalDigitsMessageLbl.isHidden = true
+
         if (textField == phoneNumberTxt) {
+            print("string:'\(string)'")
+
+            _ = phoneNumberTxt.handleTextField( textField, shouldChangeCharactersIn:range, replacementString:string)
             
-            let newString = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-            let components = newString.components(separatedBy: NSCharacterSet.decimalDigits.inverted)
-            let decimalString = components.joined(separator: "") as NSString
-            
-            let length = decimalString.length
-            let hasLeadingOne = length > 0 && decimalString.hasPrefix("1")
-            
-            if length == 0 || (length > 10 && !hasLeadingOne) || length > 11 {
-                let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
-                
-                return (newLength > 10) ? false : true
+            if let text = textField.text {
+                positionSlider.maximumValue = Float( text.count )
+                positionSlider.value = Float( range.location )
+                positionLbl.text = String( range.location )
             }
-            var index = 0 as Int
-            let formattedString = NSMutableString()
-            
-            if hasLeadingOne {
-                //                formattedString.append("1 ")
-                index += 1
-            }
-            if (length - index) > 3 {
-                let areaCode = decimalString.substring(with: NSMakeRange(index, 3))
-                formattedString.appendFormat("(%@) ", areaCode)
-                index += 3
-            }
-            if length - index > 3 {
-                let prefix = decimalString.substring(with: NSMakeRange(index, 3))
-                formattedString.appendFormat("%@ - ", prefix)
-                index += 3
-            }
-            
-            let remainder = decimalString.substring(from: index)
-            formattedString.append(remainder)
-            textField.text = formattedString as String
+
             return false
-        }
-        else {
+        } else {
             return true
+        }
+    }
+}
+
+extension SecondViewController: PhoneTextFieldProtocol {
+        func phoneNumberTextGeneratedError( _ error:PhoneNumberErrors ) {
+            
+            switch error {
+            case .noError:
+                overflowMessageLbl.isHidden = true
+                illegalDigitsMessageLbl.isHidden = true
+                
+            case .overflowError:
+                print("data too big for phone number: expected length <= 10")
+                overflowMessageLbl.isHidden = false
+            
+            case .illegalCharacterError:
+                print("Non-legal characters would be added for phone number: expected characters '0123456789( -)'")
+                illegalDigitsMessageLbl.isHidden = false
         }
     }
 }

@@ -1,4 +1,4 @@
-//
+//7
 //  FirstViewController.swift
 //  phoneNumberLab
 //
@@ -17,7 +17,8 @@ class FirstViewController: UIViewController {
     @IBOutlet var positionSlider: UISlider!
     @IBOutlet var positionLbl: UILabel!
     @IBOutlet var overflowMessageLbl: UILabel!
-    
+    @IBOutlet var illegalDigitsMessageLbl: UILabel!
+
     let lookup:[Int] = [ 0, 0, 1, 2, 2, 2, 3, 4, 5, 6, 6, 6, 6, 7, 8, 9, 10 ]
     let reverseLookup:[Int] = [ 1, 2, 3, 6, 7, 8, 9, 13, 14, 15, 16 ]
     
@@ -68,6 +69,13 @@ extension FirstViewController: UITextFieldDelegate {
         let outString = components.joined(separator: "")
         
         return outString
+    }
+    
+    func legalCopyPasteBuffer( _  string:String ) -> Bool {
+        let legalCharacterSet = CharacterSet( charactersIn:"0123456789 ()-" )
+        let components = string.components( separatedBy:legalCharacterSet.inverted )
+        
+        return ( components.count == 1 )
     }
     
     func formatPhoneNumber( _ inPhoneNumber:NSString ) -> NSString {
@@ -153,71 +161,76 @@ extension FirstViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         overflowMessageLbl.isHidden = true
-        if (textField == phoneNumberTxt) {
-            
-            if let text = textField.text {
-                positionSlider.maximumValue = Float( text.count )
-                positionSlider.value = Float( range.location )
-                positionLbl.text = String( range.location )
-            }
-            print("   string:\(string)")
-            
-            let newString = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-            print("newString:\(newString)")
-            
-            let decimalString = sanitize( newString ) as NSString
-            print("decimalString:\(decimalString)")
-            
-            let formattedString = formatPhoneNumber( decimalString )
-            print("formattedString:\(formattedString)")
-            
-            let sanitizedTokenValue = sanitize( formattedString as String )
-            resultLbl.text = sanitizedTokenValue
-
-            if sanitizedTokenValue.count <= 10 {
-                realTokenValue = sanitizedTokenValue
-                let cursor = newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
-                
-                textField.text = formattedString as String
-                
-                // =========================================
-                
-                if( string == "" ) { // delete
-                    print("0 formattedString:\(formattedString)")
-                    print("   range location:\(range.location), length:\(range.length)")
-                    
-                    if let newPosition = textField.position( from:textField.beginningOfDocument, offset:(range.location) ) {
-                        DispatchQueue.main.async {
-                            textField.selectedTextRange = textField.textRange( from:newPosition, to:newPosition )
-                        }
-                    }
-                } else {
-                    print("1 formattedString:\(formattedString)")
-                    print("   range location:\(range.location), length:\(range.length)")
-                    print("   cursor:\(cursor)")
-                    
-                    if let newPosition = textField.position( from:textField.beginningOfDocument, offset:( cursor ) ) {
-                        print("   newPosition:\(newPosition)")
-                        DispatchQueue.main.async {
-                            textField.selectedTextRange = textField.textRange( from:newPosition, to:newPosition )
-                        }
-                    }
-                }
+            overflowMessageLbl.isHidden = true
+            illegalDigitsMessageLbl.isHidden = true
+            if (textField == phoneNumberTxt) {
                 
                 if let text = textField.text {
                     positionSlider.maximumValue = Float( text.count )
                     positionSlider.value = Float( range.location )
                     positionLbl.text = String( range.location )
                 }
-            } else {
-                print("data too big for phone number \(realTokenValue)")
-                overflowMessageLbl.isHidden = false
+                print("string:'\(string)'")
+                if legalCopyPasteBuffer( string ) {
+                    let newString = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
+                    print("newString:\(newString)")
+                    
+                    let decimalString = sanitize( newString ) as NSString
+                    print("decimalString:\(decimalString)")
+                    
+                    let formattedString = formatPhoneNumber( decimalString )
+                    print("formattedString:\(formattedString)")
+                    
+                    let sanitizedTokenValue = sanitize( formattedString as String )
+                    resultLbl.text = sanitizedTokenValue
 
+                    if sanitizedTokenValue.count <= 10 {
+                        realTokenValue = sanitizedTokenValue
+                        let cursor = newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+                        
+                        textField.text = formattedString as String
+                        
+                        // =========================================
+                        
+                        if( string == "" ) { // delete
+                            print("0 formattedString:\(formattedString)")
+                            print("   range location:\(range.location), length:\(range.length)")
+                            
+                            if let newPosition = textField.position( from:textField.beginningOfDocument, offset:(range.location) ) {
+                                DispatchQueue.main.async {
+                                    textField.selectedTextRange = textField.textRange( from:newPosition, to:newPosition )
+                                }
+                            }
+                        } else {
+                            print("1 formattedString:\(formattedString)")
+                            print("   range location:\(range.location), length:\(range.length)")
+                            print("   cursor:\(cursor)")
+                            
+                            if let newPosition = textField.position( from:textField.beginningOfDocument, offset:( cursor ) ) {
+                                print("   newPosition:\(newPosition)")
+                                DispatchQueue.main.async {
+                                    textField.selectedTextRange = textField.textRange( from:newPosition, to:newPosition )
+                                }
+                            }
+                        }
+                        
+                        if let text = textField.text {
+                            positionSlider.maximumValue = Float( text.count )
+                            positionSlider.value = Float( range.location )
+                            positionLbl.text = String( range.location )
+                        }
+                    } else {
+                        print("data too big for phone number: <='\(realTokenValue)'")
+                        overflowMessageLbl.isHidden = false
+                    }
+                } else {
+                    print("Non-legal characters would be added for phone number: expected'\(string)'")
+                    illegalDigitsMessageLbl.isHidden = false
+                }
+                
+                return false
+            } else {
+                return true
             }
-            
-            return false
-        } else {
-            return true
         }
-    }
 }

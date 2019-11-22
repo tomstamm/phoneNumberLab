@@ -35,7 +35,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="n2j-Ww-Jn5">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="n2j-Ww-Jn5">
                                 <rect key="frame" x="18" y="211.5" width="339" height="31"/>
                                 <connections>
                                     <action selector="positionChanged:" destination="9pv-A4-QxB" eventType="valueChanged" id="gcN-5G-97x"/>
@@ -56,6 +56,15 @@
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to insert. Invalid digits for a phone number. Expected ('1234567890 -()')" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjs-Vq-0xf">
+                                <rect key="frame" x="20" y="358.5" width="335" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Awf-6r-j6I"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -64,8 +73,10 @@
                             <constraint firstItem="xUc-fW-USf" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="8WO-J7-pCD"/>
                             <constraint firstItem="Wcf-YN-iYV" firstAttribute="top" secondItem="12I-Ep-gdQ" secondAttribute="bottom" constant="8" id="9gG-Ai-sLq"/>
                             <constraint firstItem="1Er-T7-9EE" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="75" id="D2Q-Gn-h5T"/>
+                            <constraint firstAttribute="trailing" secondItem="sjs-Vq-0xf" secondAttribute="trailing" constant="20" id="IpA-25-R5m"/>
                             <constraint firstItem="12I-Ep-gdQ" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="20" id="V6k-uz-XFG"/>
                             <constraint firstItem="1Er-T7-9EE" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="VVi-4W-EaR"/>
+                            <constraint firstItem="sjs-Vq-0xf" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="20" id="bYa-eK-EJN"/>
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="n2j-Ww-Jn5" secondAttribute="trailing" constant="20" id="hvx-Km-Y84"/>
                             <constraint firstItem="12I-Ep-gdQ" firstAttribute="centerY" secondItem="tsR-hK-woN" secondAttribute="centerY" id="kGo-So-ziK"/>
                             <constraint firstItem="n2j-Ww-Jn5" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="20" id="nRE-js-L1Q"/>
@@ -74,11 +85,13 @@
                             <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="12I-Ep-gdQ" secondAttribute="trailing" constant="20" id="saL-Ja-Hgk"/>
                             <constraint firstItem="5Cs-VN-kN0" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="sxr-DO-2nX"/>
                             <constraint firstItem="Wcf-YN-iYV" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="tZk-mY-DDt"/>
+                            <constraint firstItem="sjs-Vq-0xf" firstAttribute="top" secondItem="12I-Ep-gdQ" secondAttribute="bottom" constant="8" id="yg4-DL-V4V"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
                     <connections>
+                        <outlet property="illegalDigitsMessageLbl" destination="sjs-Vq-0xf" id="4Y7-pJ-5dh"/>
                         <outlet property="keypadToolBar" destination="IA1-IX-r2m" id="scM-OA-NBm"/>
                         <outlet property="overflowMessageLbl" destination="Wcf-YN-iYV" id="Xqz-CB-0ks"/>
                         <outlet property="phoneNumberTxt" destination="12I-Ep-gdQ" id="kN7-wJ-XDy"/>
@@ -116,11 +129,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FLo-W4-VWA">
-                                <rect key="frame" x="-12.5" y="316.5" width="400" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="400" id="THU-5M-ZI6"/>
-                                </constraints>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="9999999999" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FLo-W4-VWA" customClass="PhoneTextField" customModule="phoneNumberLab" customModuleProvider="target">
+                                <rect key="frame" x="20" y="316.5" width="335" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="tel"/>
                             </textField>
@@ -133,22 +143,68 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="pEQ-3S-DZa">
+                                <rect key="frame" x="18" y="211.5" width="339" height="31"/>
+                                <connections>
+                                    <action selector="positionChanged:" destination="8rJ-Kc-sve" eventType="valueChanged" id="oUi-9J-CzO"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ff-0c-Rlo">
+                                <rect key="frame" x="166.5" y="182.5" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to insert. Too many digits for a phone number (10)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3of-Bz-8VR">
+                                <rect key="frame" x="20" y="358.5" width="335" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="iim-y3-oVr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to insert. Invalid digits for a phone number. Expected ('1234567890 -()')" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMZ-6U-CnO">
+                                <rect key="frame" x="20" y="358.5" width="335" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="itb-nQ-fW5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="FLo-W4-VWA" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="5gW-8E-13C"/>
+                            <constraint firstItem="3of-Bz-8VR" firstAttribute="top" secondItem="FLo-W4-VWA" secondAttribute="bottom" constant="8" id="1FI-Q1-LfO"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="FMZ-6U-CnO" secondAttribute="trailing" constant="20" id="1wK-bJ-2Ir"/>
+                            <constraint firstItem="FMZ-6U-CnO" firstAttribute="top" secondItem="FLo-W4-VWA" secondAttribute="bottom" constant="8" id="DCL-C2-WHh"/>
                             <constraint firstItem="b9m-f4-ta2" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="NqC-yD-jVM"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="FLo-W4-VWA" secondAttribute="trailing" constant="20" id="Q9w-Nv-TO5"/>
                             <constraint firstItem="kvp-B9-V5U" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" constant="75" id="RUu-e4-iKz"/>
+                            <constraint firstItem="FMZ-6U-CnO" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="UyK-CR-6U9"/>
                             <constraint firstItem="kvp-B9-V5U" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="ZB4-QH-oPW"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="pEQ-3S-DZa" secondAttribute="trailing" constant="20" id="ZtE-Jb-Q0j"/>
+                            <constraint firstItem="FLo-W4-VWA" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="akD-R1-xfJ"/>
                             <constraint firstItem="FLo-W4-VWA" firstAttribute="centerY" secondItem="QS5-Rx-YEW" secondAttribute="centerY" id="bbi-8A-rKt"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="3of-Bz-8VR" secondAttribute="trailing" constant="20" id="cr3-Qh-zhI"/>
+                            <constraint firstItem="FLo-W4-VWA" firstAttribute="top" secondItem="pEQ-3S-DZa" secondAttribute="bottom" constant="75" id="f4K-lc-XUp"/>
+                            <constraint firstItem="pEQ-3S-DZa" firstAttribute="top" secondItem="9ff-0c-Rlo" secondAttribute="bottom" constant="8" id="kcs-9w-RAc"/>
+                            <constraint firstItem="pEQ-3S-DZa" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="mgE-18-Wcv"/>
                             <constraint firstItem="b9m-f4-ta2" firstAttribute="top" secondItem="FLo-W4-VWA" secondAttribute="bottom" constant="75" id="qkx-lO-oW5"/>
+                            <constraint firstItem="3of-Bz-8VR" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="sHT-SK-QhZ"/>
+                            <constraint firstItem="9ff-0c-Rlo" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="uJK-NM-CVf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
                     <connections>
+                        <outlet property="illegalDigitsMessageLbl" destination="FMZ-6U-CnO" id="XGs-CX-mZY"/>
                         <outlet property="keypadToolBar" destination="tdY-c6-RJZ" id="rtp-oZ-CFt"/>
-                        <outlet property="phoneNumberTxt" destination="FLo-W4-VWA" id="JGJ-fe-m02"/>
+                        <outlet property="overflowMessageLbl" destination="3of-Bz-8VR" id="ptl-1x-lnX"/>
+                        <outlet property="phoneNumberTxt" destination="FLo-W4-VWA" id="OnI-f2-gZL"/>
+                        <outlet property="positionLbl" destination="9ff-0c-Rlo" id="aku-Ju-vPJ"/>
+                        <outlet property="positionSlider" destination="pEQ-3S-DZa" id="mPh-p8-0bX"/>
                         <outlet property="resultLbl" destination="b9m-f4-ta2" id="wyN-KG-bhF"/>
                     </connections>
                 </viewController>
@@ -166,7 +222,7 @@
                     </items>
                 </toolbar>
             </objects>
-            <point key="canvasLocation" x="750" y="360"/>
+            <point key="canvasLocation" x="1458" y="-384"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
