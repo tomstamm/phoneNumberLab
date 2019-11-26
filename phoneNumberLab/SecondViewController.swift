@@ -11,13 +11,13 @@ import UIKit
 class SecondViewController: UIViewController {
        let maxPhoneDigits:Int = 10
 
-@IBOutlet var phoneNumberTxt: PhoneTextField!
-@IBOutlet var resultLbl: UILabel!
-@IBOutlet var keypadToolBar: UIToolbar!
-@IBOutlet var positionSlider: UISlider!
-@IBOutlet var positionLbl: UILabel!
-@IBOutlet var overflowMessageLbl: UILabel!
-@IBOutlet var illegalDigitsMessageLbl: UILabel!
+    @IBOutlet var phoneNumberTxt: PhoneTextField!
+    @IBOutlet var resultLbl: UILabel!
+    @IBOutlet var keypadToolBar: UIToolbar!
+    @IBOutlet var positionSlider: UISlider!
+    @IBOutlet var positionLbl: UILabel!
+    @IBOutlet var overflowMessageLbl: UILabel!
+    @IBOutlet var illegalDigitsMessageLbl: UILabel!
     @IBOutlet var inputBuffer: UITextView!
     @IBOutlet var clipBoardBuffer: UITextView!
     
@@ -28,8 +28,6 @@ class SecondViewController: UIViewController {
         phoneNumberTxt.delegate = self
         phoneNumberTxt.inputAccessoryView = keypadToolBar
         
-        // This will not get thrown for the PhoneTextField because we always return
-        // false.  We have to handle this by hand.
         phoneNumberTxt.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         // Initiate buffer display
@@ -53,20 +51,10 @@ class SecondViewController: UIViewController {
         let value:Int = Int( sender.value )
         positionLbl.text = String( value )
         
-        if let newPosition = phoneNumberTxt.position( from:phoneNumberTxt.beginningOfDocument, offset:(value) ) {
-            phoneNumberTxt.selectedTextRange = phoneNumberTxt.textRange( from:newPosition, to:newPosition )
+        if let newPosition = self.phoneNumberTxt.position( from:self.phoneNumberTxt.beginningOfDocument, offset:(value) ) {
+            self.phoneNumberTxt.selectedTextRange = self.phoneNumberTxt.textRange( from:newPosition, to:newPosition )
         }
     }
-    
-//    override func paste(_ sender: Any?) {
-//        print( "sender: \(String(describing: sender))" )
-//        if phoneNumberTxt.isFirstResponder      {
-//            print( "phoneNumberTxt is First Responder" )
-//            if let pasteString = UIPasteboard.general.string {
-//                print( "pasteString: \(pasteString)" )
-//            }
-//        }
-//    }
 }
 
 // MARK: - UITextFieldDelegate Methods
@@ -80,19 +68,16 @@ extension SecondViewController: UITextFieldDelegate {
             inputBuffer.text = string
             clipBoardBuffer.text = UIPasteboard.general.string
 
-            _ = phoneNumberTxt.handleTextField( textField, shouldChangeCharactersIn:range, replacementString:string)
-            textFieldDidChange( phoneNumberTxt )
+            phoneNumberTxt.handleTextField( textField, shouldChangeCharactersIn:range, replacementString:string)
             
             if let text = textField.text {
                 positionSlider.maximumValue = Float( text.count )
                 positionSlider.value = Float( range.location )
                 positionLbl.text = String( range.location )
             }
-
-            return false
-        } else {
-            return true
         }
+        
+        return true
     }
 }
 

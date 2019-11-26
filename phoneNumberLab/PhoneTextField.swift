@@ -17,6 +17,11 @@ protocol PhoneTextFieldProtocol {
 }
 
 class PhoneTextField: UITextField {
+    var refInitialSelection:UITextRange?
+    var refText:String?
+    var refRange:NSRange?
+    var refString:String?
+
     let maxPhoneDigits:Int = 10
 
     let lookup:[Int] = [ 0, 0, 1, 2, 2, 2, 3, 4, 5, 6, 6, 6, 6, 7, 8, 9, 10 ]
@@ -42,10 +47,14 @@ class PhoneTextField: UITextField {
 
     override init( frame:CGRect ) {
         super.init( frame:frame )
+        
+        self.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
 
     required init?(coder: NSCoder) {
         super.init( coder:coder )
+        
+        self.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     func sanitize( _ inString:String ) -> String {
@@ -68,7 +77,6 @@ class PhoneTextField: UITextField {
         let formattedString = NSMutableString()
         let hasLeadingOne = length > 0 && inPhoneNumber.hasPrefix("1")
 
-
         if hasLeadingOne {
 //            formattedString.append("1 ")
             index += 1
@@ -89,18 +97,11 @@ class PhoneTextField: UITextField {
 
         return formattedString
     }
-    
-//    let lookup:[Int] = [ 0, 0, 1, 2, 2, 2, 3, 4, 5, 6, 6, 6, 6, 7, 8, 9, 10 ]
-//    let reverseLookup:[Int] = [ 0, 1, 2, 3, 6, 7, 8, 12, 13, 14, 15, 16 ]
 
-    func newCursorPosition(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Int {
-        let orgText:String = textField.text ?? ""
-        let orgSubText:String = (( textField.text ?? "" ) as NSString ).substring( with:range ) as String
+    func newCursorPosition(_ text: String, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Int {
+        let orgText:String = text
+        let orgSubText:String = (text as NSString ).substring( with:range ) as String
         let theoreticalCursor:Int = range.location + range.length
-        
-        print("\ntextField.text:\(textField.text)")
-        print("   range location:\(range.location), length:\(range.length)")
-        print("   theoreticalCursor:\(theoreticalCursor)")
 
         var newTheoreticalCursor:Int = theoreticalCursor
         if orgText.count > 3 {
@@ -110,30 +111,20 @@ class PhoneTextField: UITextField {
                 newTheoreticalCursor = lookup[ theoreticalCursor ]
             }
         }
-  
-        print("   newTheoreticalCursor:\(newTheoreticalCursor)")
 
         let newSubText:String = sanitize( orgSubText )
         let newString:String = sanitize( string )
         let delta:Int = newString.count - newSubText.count
-        print("   newSubText:\(newSubText)")
-        print("   newString:\(newString)")
-        print("   delta:\(delta)")
 
         newTheoreticalCursor += delta
         if( newTheoreticalCursor > 10 ) {   // This could happen if the first character in the paste block is a "1"
             newTheoreticalCursor = 10
         }
-        print("   newTheoreticalCursor:\(newTheoreticalCursor)")
         
         var newCursorPosition = newTheoreticalCursor
         if orgText.count > 2 || newString.count > 3 {
             if( string == "" ) { // This is a delete
-                if( range.length == 1 ) {
-                    newCursorPosition = range.location
-                } else {
-                    newCursorPosition = range.location
-                }
+                newCursorPosition = range.location
             } else {
                 if newTheoreticalCursor >= 0 {
                     newCursorPosition = reverseLookup[ newTheoreticalCursor ]
@@ -142,63 +133,68 @@ class PhoneTextField: UITextField {
                 }
             }
         }
-        print("   newCursorPosition:\(newCursorPosition)")
 
         return newCursorPosition
     }
     
-    func handleTextField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func handleError( _ error:PhoneNumberErrors ) {
+        DispatchQueue.main.async {
+            // Reset textField to original values.
+            self.text = self.refText                            // There is an error restore the original text.
+            self.selectedTextRange = self.refInitialSelection   // Restore the original selection.
             
-        print("string:'\(string)'")
-        if legalCopyPasteBuffer( string ) {
-            let newString = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-            print("newString:\(newString)")
-            
-            let decimalString = sanitize( newString ) as NSString
-            print("decimalString:\(decimalString)")
-            
-            let formattedString = formatPhoneNumber( decimalString )
-            print("formattedString:\(formattedString)")
-            
-            let sanitizedTokenValue = sanitize( formattedString as String )
+            // Hand off error to delegate
+            self.errorDelegate?.phoneNumberTextGeneratedError( error )
+        }
+    }
 
-            if sanitizedTokenValue.count <= 10 {
-                let cursor = newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+    @objc func textFieldDidChange( _ textField: UITextField ) {
+        if legalCopyPasteBuffer( refString ?? "" ) {
+            if let text = refText,
+               let range  = refRange,
+               let string = refString {
                 
-                textField.text = formattedString as String
-                
-                // =========================================
-                
-                if( string == "" ) { // delete
-                    print("0 formattedString:\(formattedString)")
-                    print("   range location:\(range.location), length:\(range.length)")
-                    
-                    if let newPosition = textField.position( from:textField.beginningOfDocument, offset:(range.location) ) {
-                        DispatchQueue.main.async {
-                            textField.selectedTextRange = textField.textRange( from:newPosition, to:newPosition )
+                let newString = (text as NSString).replacingCharacters(in: range, with: string)
+                let decimalString = sanitize( newString ) as NSString
+                let formattedString = formatPhoneNumber( decimalString )
+                let sanitizedTokenValue = sanitize( formattedString as String )
+
+                if sanitizedTokenValue.count <= 10 {
+                    let cursor = newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
+
+                    self.text = formattedString as String
+
+                    if( string == "" ) { // delete
+                        if let newPosition = self.position( from:self.beginningOfDocument, offset:(range.location) ) {
+                            DispatchQueue.main.async {
+                                self.selectedTextRange = self.textRange( from:newPosition, to:newPosition )
+                            }
+                        }
+                    } else {
+                        if let newPosition = self.position( from:self.beginningOfDocument, offset:( cursor ) ) {
+                             DispatchQueue.main.async {
+                                self.selectedTextRange = self.textRange( from:newPosition, to:newPosition )
+                            }
                         }
                     }
+
                 } else {
-                    print("1 formattedString:\(formattedString)")
-                    print("   range location:\(range.location), length:\(range.length)")
-                    print("   cursor:\(cursor)")
-                    
-                    if let newPosition = textField.position( from:textField.beginningOfDocument, offset:( cursor ) ) {
-                        print("   newPosition:\(newPosition)")
-                        DispatchQueue.main.async {
-                            textField.selectedTextRange = textField.textRange( from:newPosition, to:newPosition )
-                        }
-                    }
+                    handleError( .overflowError )
                 }
-                
-            } else {
-                self.errorDelegate?.phoneNumberTextGeneratedError( .overflowError )
             }
         } else {
-             self.errorDelegate?.phoneNumberTextGeneratedError( .illegalCharacterError )
-            
+            handleError( .illegalCharacterError )
         }
+    }
+    
+    func handleTextField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) {
         
-        return false
+        // Save reference values to be used in formatting later in textFieldDidChange
+        refInitialSelection = self.selectedTextRange
+        refText = textField.text
+        refRange = range
+        refString = string
+         
+        return
     }
 }

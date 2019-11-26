@@ -12,8 +12,6 @@ import XCTest
 class testPhoneTextField: XCTestCase {
     
     let second = SecondViewController()
-
-    
     let phonenumberText = PhoneTextField( frame:CGRect( x:10, y:10, width:10, height:10) )
     let currentErrorCode:PhoneNumberErrors = .noError
 
@@ -124,66 +122,64 @@ class testPhoneTextField: XCTestCase {
     }
     
     func testNewCursorPosition() {
-        let textField = UITextField()
-        
-        textField.text = ""
+        var text = ""
         var range = NSMakeRange( 0, 0 )
         var string = "9"
-        var cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        var cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 1, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "9"
+        text = "9"
         range = NSMakeRange( 1, 0 )
         string = "8"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 2, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "98"
+        text = "98"
         range = NSMakeRange( 2, 0 )
         string = "7"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 3, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "987"
+        text = "987"
         range = NSMakeRange( 3, 0 )
         string = "6"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 7, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "(987) 6"
+        text = "(987) 6"
         range = NSMakeRange( 7, 0 )
         string = "5"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 8, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "(987) 65"
+        text = "(987) 65"
         range = NSMakeRange( 8, 0 )
         string = "4"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 9, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "(987) 654"
+        text = "(987) 654"
         range = NSMakeRange( 9, 0 )
         string = "3"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 13, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "(987) 654 - 3"
+        text = "(987) 654 - 3"
         range = NSMakeRange( 13, 0 )
         string = "2"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 14, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "(987) 654 - 32"
+        text = "(987) 654 - 32"
         range = NSMakeRange( 14, 0 )
         string = "1"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 15, "Unexpect length return from buildSanitizedRange")
 
-        textField.text = "(987) 654 - 321"
+        text = "(987) 654 - 321"
         range = NSMakeRange( 15, 0 )
         string = "0"
-        cursor = phonenumberText.newCursorPosition( textField, shouldChangeCharactersIn:range, replacementString:string )
+        cursor = phonenumberText.newCursorPosition( text, shouldChangeCharactersIn:range, replacementString:string )
         XCTAssertEqual( cursor, 16, "Unexpect length return from buildSanitizedRange")
     }
     
@@ -216,14 +212,20 @@ class testPhoneTextField: XCTestCase {
 
         phonenumberText.text = initalValue
 
-        let value:Bool = phonenumberText.handleTextField( phonenumberText, shouldChangeCharactersIn:selectedRange, replacementString:newString )
+        // Save reference values for the handleTextFieldDidChange call
+        phonenumberText.handleTextField( phonenumberText, shouldChangeCharactersIn:selectedRange, replacementString:newString )
+        
+        XCTAssertNotNil( phonenumberText.refText, "Unexpected NIL value in from phoneNumberTxt.refText")
+        XCTAssertNotNil( phonenumberText.refRange, "Unexpected NIL value in from phoneNumberTxt.refRange")
+        XCTAssertNotNil( phonenumberText.refString, "Unexpected NIL value in from phoneNumberTxt.refString")
+
+        // Format the phone number using values saved by handleTextField
+        phonenumberText.textFieldDidChange( phonenumberText )
 
         let storedValue = self.phonenumberText.text
         XCTAssertEqual( storedValue, expectedResult, "Unexpect text value in from phoneNumberTxt object")
 
         XCTAssertEqual( phonenumberText.token, expectedValue, "Unexpect text value in from token value")
-
-        XCTAssertFalse( value, "Expected flag value return by textField function")
     }
     
     func testTextField_shouldChangeCharactersIn () {
@@ -264,12 +266,6 @@ class testPhoneTextField: XCTestCase {
         paste( "9999999999" )
         
         XCTAssertEqual( phonenumberText.text, "9999999999", "Unexpect text value in from token value")
-
-//        UIPasteboard.general.string = "0000000000"
-//        self.second.phoneNumberTxt.becomeFirstResponder()
-//        self.second.paste( self )
-//        XCTAssertEqual( self.phonenumberText.text, "00000000001", "Unexpect text value in from token value")
-
     }
     
 }

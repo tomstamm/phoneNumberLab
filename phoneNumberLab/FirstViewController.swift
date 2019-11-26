@@ -114,7 +114,7 @@ extension FirstViewController: UITextFieldDelegate {
         let orgSubText:String = (( textField.text ?? "" ) as NSString ).substring( with:range ) as String
         let theoreticalCursor:Int = range.location + range.length
         
-        print("\ntextField.text:\(textField.text)")
+        print("\ntextField.text:\(textField.text ?? "")")
         print("   range location:\(range.location), length:\(range.length)")
         print("   theoreticalCursor:\(theoreticalCursor)")
 
