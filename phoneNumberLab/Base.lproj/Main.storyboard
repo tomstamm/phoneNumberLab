@@ -135,7 +135,7 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="tel"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b9m-f4-ta2">
-                                <rect key="frame" x="-12.5" y="425.5" width="400" height="21"/>
+                                <rect key="frame" x="-12.5" y="400.5" width="400" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="400" id="Rp7-AM-wo4"/>
                                 </constraints>
@@ -173,12 +173,31 @@
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rjU-VT-uuM">
+                                <rect key="frame" x="20" y="441.5" width="335" height="68.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="joT-mU-D3e">
+                                <rect key="frame" x="20" y="530" width="335" height="68"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="3of-Bz-8VR" firstAttribute="top" secondItem="FLo-W4-VWA" secondAttribute="bottom" constant="8" id="1FI-Q1-LfO"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="FMZ-6U-CnO" secondAttribute="trailing" constant="20" id="1wK-bJ-2Ir"/>
+                            <constraint firstItem="joT-mU-D3e" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="2YQ-cR-iSK"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="joT-mU-D3e" secondAttribute="trailing" constant="20" id="343-v0-EzW"/>
                             <constraint firstItem="FMZ-6U-CnO" firstAttribute="top" secondItem="FLo-W4-VWA" secondAttribute="bottom" constant="8" id="DCL-C2-WHh"/>
+                            <constraint firstItem="joT-mU-D3e" firstAttribute="top" secondItem="rjU-VT-uuM" secondAttribute="bottom" constant="20" id="JZo-Qv-6m1"/>
                             <constraint firstItem="b9m-f4-ta2" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="NqC-yD-jVM"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="FLo-W4-VWA" secondAttribute="trailing" constant="20" id="Q9w-Nv-TO5"/>
                             <constraint firstItem="kvp-B9-V5U" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" constant="75" id="RUu-e4-iKz"/>
@@ -188,18 +207,25 @@
                             <constraint firstItem="FLo-W4-VWA" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="akD-R1-xfJ"/>
                             <constraint firstItem="FLo-W4-VWA" firstAttribute="centerY" secondItem="QS5-Rx-YEW" secondAttribute="centerY" id="bbi-8A-rKt"/>
                             <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="3of-Bz-8VR" secondAttribute="trailing" constant="20" id="cr3-Qh-zhI"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="joT-mU-D3e" secondAttribute="bottom" constant="20" id="dLj-hK-hnS"/>
                             <constraint firstItem="FLo-W4-VWA" firstAttribute="top" secondItem="pEQ-3S-DZa" secondAttribute="bottom" constant="75" id="f4K-lc-XUp"/>
                             <constraint firstItem="pEQ-3S-DZa" firstAttribute="top" secondItem="9ff-0c-Rlo" secondAttribute="bottom" constant="8" id="kcs-9w-RAc"/>
                             <constraint firstItem="pEQ-3S-DZa" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="mgE-18-Wcv"/>
-                            <constraint firstItem="b9m-f4-ta2" firstAttribute="top" secondItem="FLo-W4-VWA" secondAttribute="bottom" constant="75" id="qkx-lO-oW5"/>
+                            <constraint firstItem="b9m-f4-ta2" firstAttribute="top" secondItem="FLo-W4-VWA" secondAttribute="bottom" constant="50" id="qkx-lO-oW5"/>
+                            <constraint firstItem="rjU-VT-uuM" firstAttribute="top" secondItem="b9m-f4-ta2" secondAttribute="bottom" constant="20" id="r26-23-rRf"/>
+                            <constraint firstItem="joT-mU-D3e" firstAttribute="height" secondItem="rjU-VT-uuM" secondAttribute="height" id="rfV-gC-QZg"/>
                             <constraint firstItem="3of-Bz-8VR" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="sHT-SK-QhZ"/>
+                            <constraint firstItem="rjU-VT-uuM" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" constant="20" id="u89-Vj-mHh"/>
                             <constraint firstItem="9ff-0c-Rlo" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="uJK-NM-CVf"/>
+                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="rjU-VT-uuM" secondAttribute="trailing" constant="20" id="y5P-Es-BHf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
                     <connections>
+                        <outlet property="clipBoardBuffer" destination="joT-mU-D3e" id="GRB-EC-CjE"/>
                         <outlet property="illegalDigitsMessageLbl" destination="FMZ-6U-CnO" id="XGs-CX-mZY"/>
+                        <outlet property="inputBuffer" destination="rjU-VT-uuM" id="JcS-Qn-zAA"/>
                         <outlet property="keypadToolBar" destination="tdY-c6-RJZ" id="rtp-oZ-CFt"/>
                         <outlet property="overflowMessageLbl" destination="3of-Bz-8VR" id="ptl-1x-lnX"/>
                         <outlet property="phoneNumberTxt" destination="FLo-W4-VWA" id="OnI-f2-gZL"/>
@@ -222,7 +248,7 @@
                     </items>
                 </toolbar>
             </objects>
-            <point key="canvasLocation" x="1458" y="-384"/>
+            <point key="canvasLocation" x="1456.8" y="-384.55772113943033"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">

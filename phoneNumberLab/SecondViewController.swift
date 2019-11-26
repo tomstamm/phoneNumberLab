@@ -18,7 +18,9 @@ class SecondViewController: UIViewController {
 @IBOutlet var positionLbl: UILabel!
 @IBOutlet var overflowMessageLbl: UILabel!
 @IBOutlet var illegalDigitsMessageLbl: UILabel!
-
+    @IBOutlet var inputBuffer: UITextView!
+    @IBOutlet var clipBoardBuffer: UITextView!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear( animated )
         
@@ -29,6 +31,10 @@ class SecondViewController: UIViewController {
         // This will not get thrown for the PhoneTextField because we always return
         // false.  We have to handle this by hand.
         phoneNumberTxt.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        // Initiate buffer display
+        inputBuffer.text = ""
+        clipBoardBuffer.text = ""
     }
 
     @objc func textFieldDidChange( _ textField: UITextField ) {
@@ -71,7 +77,8 @@ extension SecondViewController: UITextFieldDelegate {
         illegalDigitsMessageLbl.isHidden = true
 
         if (textField == phoneNumberTxt) {
-            print("string:'\(string)'")
+            inputBuffer.text = string
+            clipBoardBuffer.text = UIPasteboard.general.string
 
             _ = phoneNumberTxt.handleTextField( textField, shouldChangeCharactersIn:range, replacementString:string)
             textFieldDidChange( phoneNumberTxt )
