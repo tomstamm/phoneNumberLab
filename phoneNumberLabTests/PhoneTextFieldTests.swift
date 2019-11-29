@@ -11,14 +11,14 @@ import XCTest
 
 class testPhoneTextField: XCTestCase {
     
-    let second = SecondViewController()
+    let phoneVC = PhoneVC()
     let phonenumberText = PhoneTextField( frame:CGRect( x:10, y:10, width:10, height:10) )
     let currentErrorCode:PhoneNumberErrors = .noError
 
     override func setUp() {
         phonenumberText.errorDelegate = self
         
-        second.phoneNumberTxt = phonenumberText
+        phoneVC.phoneNumberTxt = phonenumberText
     }
 
     override func tearDown() {

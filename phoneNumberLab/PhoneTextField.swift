@@ -36,7 +36,7 @@ class PhoneTextField: UITextField {
             }
         }
     }
-    
+
     var errorDelegate:PhoneTextFieldProtocol?
     override var delegate:UITextFieldDelegate?
     {
@@ -47,30 +47,30 @@ class PhoneTextField: UITextField {
 
     override init( frame:CGRect ) {
         super.init( frame:frame )
-        
+
         self.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
 
     required init?(coder: NSCoder) {
         super.init( coder:coder )
-        
+
         self.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     func sanitize( _ inString:String ) -> String {
         let components = inString.components(separatedBy: NSCharacterSet.decimalDigits.inverted)
         let outString = components.joined(separator: "")
-        
+
         return outString
     }
-        
+
     func legalCopyPasteBuffer( _  string:String ) -> Bool {
         let legalCharacterSet = CharacterSet( charactersIn:"0123456789 ()-" )
         let components = string.components( separatedBy:legalCharacterSet.inverted )
-        
+
         return ( components.count == 1 )
     }
-    
+
     func formatPhoneNumber( _ inPhoneNumber:NSString ) -> NSString {
         let length = inPhoneNumber.length
         var index = 0 as Int
@@ -120,7 +120,7 @@ class PhoneTextField: UITextField {
         if( newTheoreticalCursor > 10 ) {   // This could happen if the first character in the paste block is a "1"
             newTheoreticalCursor = 10
         }
-        
+
         var newCursorPosition = newTheoreticalCursor
         if orgText.count > 2 || newString.count > 3 {
             if( string == "" ) { // This is a delete
@@ -136,7 +136,7 @@ class PhoneTextField: UITextField {
 
         return newCursorPosition
     }
-    
+
     func handleError( _ error:PhoneNumberErrors ) {
         DispatchQueue.main.async {
             // Reset textField to original values.
@@ -153,7 +153,7 @@ class PhoneTextField: UITextField {
             if let text = refText,
                let range  = refRange,
                let string = refString {
-                
+
                 let newString = (text as NSString).replacingCharacters(in: range, with: string)
                 let decimalString = sanitize( newString ) as NSString
                 let formattedString = formatPhoneNumber( decimalString )
@@ -188,13 +188,13 @@ class PhoneTextField: UITextField {
     }
     
     func handleTextField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) {
-        
+
         // Save reference values to be used in formatting later in textFieldDidChange
         refInitialSelection = self.selectedTextRange
         refText = textField.text
         refRange = range
         refString = string
-         
+
         return
     }
 }

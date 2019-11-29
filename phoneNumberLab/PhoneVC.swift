@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  PhoneVC.swift
 //  phoneNumberLab
 //
 //  Created by Tom Stamm on 11/18/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class PhoneVC: UIViewController {
        let maxPhoneDigits:Int = 10
 
     @IBOutlet var phoneNumberTxt: PhoneTextField!
@@ -20,16 +20,16 @@ class SecondViewController: UIViewController {
     @IBOutlet var illegalDigitsMessageLbl: UILabel!
     @IBOutlet var inputBuffer: UITextView!
     @IBOutlet var clipBoardBuffer: UITextView!
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear( animated )
-        
+
         // Keyboard scolling logic
         phoneNumberTxt.delegate = self
         phoneNumberTxt.inputAccessoryView = keypadToolBar
-        
+
         phoneNumberTxt.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
+
         // Initiate buffer display
         inputBuffer.text = ""
         clipBoardBuffer.text = ""
@@ -58,7 +58,7 @@ class SecondViewController: UIViewController {
 }
 
 // MARK: - UITextFieldDelegate Methods
-extension SecondViewController: UITextFieldDelegate {
+extension PhoneVC: UITextFieldDelegate {
    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
        
         overflowMessageLbl.isHidden = true
@@ -76,23 +76,23 @@ extension SecondViewController: UITextFieldDelegate {
                 positionLbl.text = String( range.location )
             }
         }
-        
+
         return true
     }
 }
 
-extension SecondViewController: PhoneTextFieldProtocol {
+extension PhoneVC: PhoneTextFieldProtocol {
         func phoneNumberTextGeneratedError( _ error:PhoneNumberErrors ) {
             
             switch error {
             case .noError:
                 overflowMessageLbl.isHidden = true
                 illegalDigitsMessageLbl.isHidden = true
-                
+
             case .overflowError:
                 print("data too big for phone number: expected length <= 10")
                 overflowMessageLbl.isHidden = false
-            
+
             case .illegalCharacterError:
                 print("Non-legal characters would be added for phone number: expected characters '0123456789( -)'")
                 illegalDigitsMessageLbl.isHidden = false
